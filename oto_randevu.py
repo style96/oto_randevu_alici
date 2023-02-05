@@ -21,6 +21,7 @@ def write(xpath,text):
 	elem.send_keys(text)
 
 def captcha_resolver(xpath):
+	time.sleep(0.5)
 	elem = driver.find_element(By.XPATH, xpath)
 	image_src = elem.get_attribute('src')
 	image_src = image_src[22:]
@@ -29,7 +30,8 @@ def captcha_resolver(xpath):
 	text = pytesseract.image_to_string(img)
 	text_digit = ''.join(x for x in text if x.isdigit())
 	if(text_digit == ''):
-		text_digit = '0000'
+		click(f'//*[@id="divKisi"]/div[1]/div[6]/div/label/a/i')
+		captcha_resolver(xpath)
 	return text_digit
 	
 def is_element_exist(xpath):
@@ -77,11 +79,19 @@ write(f'//*[@id="divKisi"]/div[1]/div[4]/div/div/div[1]/input', "01")
 write(f'//*[@id="divKisi"]/div[1]/div[4]/div/div/div[2]/input', "06")
 write(f'//*[@id="divKisi"]/div[1]/div[4]/div/div/div[3]/input', "1996")
 write(f'//*[@id="divKisi"]/div[1]/div[5]/div/input', "5546876681")
+
 captcha = captcha_resolver(f'//*[@id="divKisi"]/div[1]/div[6]/div/div/img')
+while(captcha == ''):
+	click(f'//*[@id="divKisi"]/div[1]/div[6]/div/label/a/i')
+	captcha = captcha_resolver(f'//*[@id="divKisi"]/div[1]/div[6]/div/div/img')
 write(f'//*[@id="divKisi"]/div[1]/div[6]/div/input', captcha)
+
 click(f'//*[@id="divKisi"]/div[2]/div/button')
 while(confirm_error()):
 	captcha = captcha_resolver(f'//*[@id="divKisi"]/div[1]/div[6]/div/div/img')
+	while(captcha == ''):
+		click(f'//*[@id="divKisi"]/div[1]/div[6]/div/label/a/i')
+		captcha = captcha_resolver(f'//*[@id="divKisi"]/div[1]/div[6]/div/div/img')
 	write(f'//*[@id="divKisi"]/div[1]/div[6]/div/input', captcha)
 	click(f'//*[@id="divKisi"]/div[2]/div/button')
 click(f'/html/body/div/form/section/div/div[2]/div[3]/div/div/a[2]/span')
