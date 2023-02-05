@@ -1,2 +1,2 @@
 # oto_randevu_alici
-randevu.nvi.gov.tr sitesinden otomatik randevu alıcı bot.
+Selenium kullanarak randevu.nvi.gov.tr sitesinden otomatik randevu alıcı bot.
