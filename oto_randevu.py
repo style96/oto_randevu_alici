@@ -102,9 +102,9 @@ for item in items:
 	now = datetime.now()
 	delta = date - now
 	belediye = {
-		"belediye" : mekan,
+		"belediye" : mekan.split(" ")[0],
 		"doluluk" : rate,
-		"tarih" : date,
+		"tarih" : date.strftime("%d/%m/%Y"),
 		"fark" : delta.days + 1
 	}
 	belediyeler.append(belediye)
@@ -152,7 +152,3 @@ bw.save('captcha_thresholded.png')
 text = pytesseract.image_to_string(img)
 print(''.join(x for x in text if x.isdigit()))
 """
-
-
-print(elem.is_displayed())
-
